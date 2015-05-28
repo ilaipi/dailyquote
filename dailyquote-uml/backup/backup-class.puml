@@ -1,0 +1,18 @@
+@startuml
+
+interface Runnable
+
+class Main
+abstract class DailyQuoteBackupThread
+class BackupSHQuoteThread
+class BackupSZQuoteThread
+
+Main --> BackupSHQuoteThread
+Main --> BackupSZQuoteThread
+
+Runnable <|-- DailyQuoteBackupThread
+
+BackupSHQuoteThread --|> DailyQuoteBackupThread
+BackupSZQuoteThread --|> DailyQuoteBackupThread
+
+@enduml

@@ -1,0 +1,38 @@
+@startuml
+
+interface Runnable
+
+class Main{
+dataSource : DataSource
+config : Properties
+readConfig() : Properties
+getConnection() : Connection
+buildConnectionPool() : DataSource
+getConfig(String key, String defaultValue) : String
+}
+class DBFScanner{
+run()//监控行情数据文件夹的文件修改事件，触发解析线程
+}
+abstract class ParseDBFThread{
+run()
+tradingTime(String time) : Boolean
+buildInsertValues(String insertPrefix, Object[] record, String datetime) : String
+buildInsertPrefix() : String
+abstract parseDateAndTime() : void
+abstract isParsedTime() : boolean
+abstract updateLastTime() : String
+abstract insertOrUpdateLast(String datetime) : String
+abstract insertParsedSecond(String datetime) : String
+}
+class SHParseThread
+class SZParseThread
+
+Main -down-> DBFScanner
+DBFScanner -down-> ParseDBFThread
+
+Runnable <|-down- DBFScanner
+Runnable <|-down- ParseDBFThread
+
+SHParseThread -up-|> ParseDBFThread
+SZParseThread -up-|> ParseDBFThread
+@enduml
